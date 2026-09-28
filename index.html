@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VOLTZ+</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(120deg, #0b0b0b, #000000, #070707);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: url("https://i.postimg.cc/FsQn2XGY/Chat-GPT-Image-20-de-ago-de-2026-02-46-53.png");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(0, 0, 0, 0.438);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .4);
+            text-align: center;
+        }
+
+        h1 {
+            color: #e1ebef;
+            margin-bottom: 10px;
+            font-size: 36px;
+        }
+
+        p {
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #505050;
+            border-radius: 8px;
+            background: #111;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: .3s;
+        }
+
+        input:focus {
+            border-color: #a1a1a1;
+            box-shadow: 0 0 10px rgba(59, 117, 141, .4);
+        }
+
+        input::placeholder {
+            color: #888;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
+            background: rgb(51, 51, 51);
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        button:hover {
+            background: #a3a3a3;
+            transform: translateY(-2px);
+        }
+
+        #mensagem {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #999;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        footer a {
+            color: darkgray;
+        }
+
+        @media (max-width: 768px) {
+
+            .card {
+                padding: 35px 25px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            p {
+                font-size: 15px;
+            }
+
+            input {
+                padding: 15px;
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 17px;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+
+            .card {
+                padding: 25px 18px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="card">
+
+        <h1>VOLTZ+</h1>
+
+        <p>
+            Entre para acessar o sistema.
+        </p>
+
+        <input
+            type="text"
+            id="usuario"
+            placeholder="Nome e sobrenome"
+        >
+
+        <input
+            type="email"
+            id="email"
+            placeholder="E-mail"
+        >
+
+        <input
+            type="password"
+            id="senha"
+            placeholder="Senha"
+        >
+
+        <button onclick="login()">
+            Entrar
+        </button>
+
+        <div id="mensagem"></div>
+
+        <footer>
+
+            <p>
+
+                Ainda não possui uma conta?
+
+                <a href="cadastro.html">
+                    Cadastre-se
+                </a>
+
+            </p>
+
+            © 2026 VOLTZ LTDA
+
+        </footer>
+
+    </div>
+
+
+    <script>
+
+        function login() {
+
+            let usuario =
+                document.getElementById("usuario").value.trim();
+
+            let email =
+                document.getElementById("email").value.trim();
+
+            let senha =
+                document.getElementById("senha").value;
+
+            const mensagem =
+                document.getElementById("mensagem");
+
+            mensagem.innerHTML = "";
+
+
+            if (usuario === "" || email === "" || senha === "") {
+
+                mensagem.style.color = "#ff4d4d";
+
+                mensagem.innerHTML =
+                    "Preencha todos os campos.";
+
+                return;
+
+            }
+
+
+            let partesNome =
+                usuario.split(/\s+/).filter(Boolean);
+
+
+            if (partesNome.length < 2) {
+
+                mensagem.style.color = "#ff4d4d";
+
+                mensagem.innerHTML =
+                    "Digite seu nome e sobrenome.";
+
+                return;
+
+            }
+
+
+            let nomeValido =
+                /^[A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+)+$/.test(usuario);
+
+
+            if (!nomeValido) {
+
+                mensagem.style.color = "#ff4d4d";
+
+                mensagem.innerHTML =
+                    "Digite seu nome e sobrenome.";
+
+                return;
+
+            }
+
+
+            let emailValido =
+                /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+
+            if (!emailValido.test(email)) {
+
+                mensagem.style.color = "#ff4d4d";
+
+                mensagem.innerHTML =
+                    'O e-mail deve ser válido e conter "@".';
+
+                return;
+
+            }
+
+
+            let senhaForte =
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+
+
+            if (!senhaForte.test(senha)) {
+
+                mensagem.style.color = "#ff4d4d";
+
+                mensagem.innerHTML =
+                    "A senha deve ter no mínimo 8 caracteres, " +
+                    "incluindo letra maiúscula, letra minúscula, " +
+                    "número e caractere especial.";
+
+                return;
+
+            }
+
+
+            let usuarios =
+                JSON.parse(localStorage.getItem("usuarios")) || [];
+
+
+            let usuarioEncontrado =
+                usuarios.find(function(pessoa) {
+
+                    return (
+
+                        pessoa.usuario.toLowerCase() ===
+                            usuario.toLowerCase() &&
+
+                        pessoa.email.toLowerCase() ===
+                            email.toLowerCase() &&
+
+                        pessoa.senha === senha
+
+                    );
+
+                });
+
+
+            if (usuarioEncontrado) {
+
+                mensagem.style.color = "#2ecc71";
+
+                mensagem.innerHTML =
+                    "Login realizado com sucesso!";
+
+
+                localStorage.setItem(
+                    "nomeUsuario",
+                    usuarioEncontrado.usuario
+                );
+
+
+                localStorage.setItem(
+                    "emailUsuario",
+                    usuarioEncontrado.email
+                );
+
+
+                sessionStorage.setItem(
+                    "logado",
+                    "true"
+                );
+
+
+                setTimeout(function() {
+
+                    window.location.href = "Dashboard.html";
+
+                }, 1000);
+
+
+            } else {
+
+                mensagem.style.color = "#ff4d4d";
+
+                mensagem.innerHTML =
+                    "Usuário, e-mail ou senha incorretos.";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

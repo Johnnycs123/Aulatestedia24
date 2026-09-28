@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastro | VOLTZ+</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(120deg, #0b0b0b, #000000, #070707);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: url("https://i.postimg.cc/FsQn2XGY/Chat-GPT-Image-20-de-ago-de-2026-02-46-53.png");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(10, 10, 10, 0.35);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .4);
+            text-align: center;
+        }
+
+        h2 {
+            color: white;
+            margin-bottom: 25px;
+            font-size: 30px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #505050;
+            border-radius: 8px;
+            background: #111;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: .3s;
+        }
+
+        input:focus {
+            border-color: #a1a1a1;
+            box-shadow: 0 0 10px rgba(59, 117, 141, .4);
+        }
+
+        input::placeholder {
+            color: #888;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
+            background: rgb(51, 51, 51);
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        button:hover {
+            background: #a3a3a3;
+            transform: translateY(-2px);
+        }
+
+        #mensagem {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+
+            .card {
+                padding: 35px 25px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            input {
+                padding: 15px;
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 17px;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+
+            .card {
+                padding: 25px 18px;
+                border-radius: 15px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="card">
+
+        <h2>Criar conta</h2>
+
+        <input
+            type="text"
+            id="usuarioCadastro"
+            placeholder="Nome e sobrenome"
+        >
+
+        <input
+            type="email"
+            id="emailCadastro"
+            placeholder="E-mail"
+        >
+
+        <input
+            type="password"
+            id="senhaCadastro"
+            placeholder="Senha"
+        >
+
+        <button onclick="cadastrar()">
+            Cadastrar
+        </button>
+
+        <p id="mensagem"></p>
+
+    </div>
+
+
+    <script>
+
+        function cadastrar() {
+
+            let usuario =
+                document.getElementById("usuarioCadastro").value.trim();
+
+            let email =
+                document.getElementById("emailCadastro").value.trim();
+
+            let senha =
+                document.getElementById("senhaCadastro").value;
+
+            const mensagem =
+                document.getElementById("mensagem");
+
+            mensagem.innerHTML = "";
+
+
+            if (usuario === "" || email === "" || senha === "") {
+
+                mensagem.style.color = "red";
+                mensagem.innerHTML = "Preencha todos os campos.";
+
+                return;
+
+            }
+
+
+            let partesNome =
+                usuario.split(/\s+/).filter(Boolean);
+
+
+            if (partesNome.length < 2) {
+
+                mensagem.style.color = "red";
+                mensagem.innerHTML =
+                    "Digite seu nome e sobrenome.";
+
+                return;
+
+            }
+
+
+            let nomeValido =
+                /^[A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+)+$/.test(usuario);
+
+
+            if (!nomeValido) {
+
+                mensagem.style.color = "red";
+                mensagem.innerHTML =
+                    "Digite um nome e sobrenome válidos.";
+
+                return;
+
+            }
+
+
+            let emailValido =
+                /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+
+            if (!emailValido.test(email)) {
+
+                mensagem.style.color = "red";
+                mensagem.innerHTML =
+                    'O e-mail deve ser válido e conter "@".';
+
+                return;
+
+            }
+
+
+            let senhaForte =
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+
+
+            if (!senhaForte.test(senha)) {
+
+                mensagem.style.color = "red";
+
+                mensagem.innerHTML =
+                    "A senha deve ter no mínimo 8 caracteres, " +
+                    "incluindo letra maiúscula, letra minúscula, " +
+                    "número e caractere especial.";
+
+                return;
+
+            }
+
+
+            let usuarios =
+                JSON.parse(localStorage.getItem("usuarios")) || [];
+
+
+            let usuarioExiste =
+                usuarios.some(function(pessoa) {
+
+                    return pessoa.usuario.toLowerCase() ===
+                        usuario.toLowerCase();
+
+                });
+
+
+            if (usuarioExiste) {
+
+                mensagem.style.color = "red";
+
+                mensagem.innerHTML =
+                    "Esse usuário já está cadastrado.";
+
+                return;
+
+            }
+
+
+            let emailExiste =
+                usuarios.some(function(pessoa) {
+
+                    return pessoa.email.toLowerCase() ===
+                        email.toLowerCase();
+
+                });
+
+
+            if (emailExiste) {
+
+                mensagem.style.color = "red";
+
+                mensagem.innerHTML =
+                    "Esse e-mail já está cadastrado.";
+
+                return;
+
+            }
+
+
+            let novoUsuario = {
+
+                usuario: usuario,
+                email: email,
+                senha: senha
+
+            };
+
+
+            usuarios.push(novoUsuario);
+
+
+            localStorage.setItem(
+                "usuarios",
+                JSON.stringify(usuarios)
+            );
+
+
+            mensagem.style.color = "#2ecc71";
+
+            mensagem.innerHTML =
+                "Cadastro realizado com sucesso!";
+
+
+            setTimeout(function() {
+
+                window.location.href = "index.html";
+
+            }, 1000);
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+
